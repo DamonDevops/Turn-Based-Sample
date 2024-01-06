@@ -1,12 +1,24 @@
-[gd_scene load_steps=3 format=3 uid="uid://b3i6u0u3rg3hj"]
+[gd_scene load_steps=5 format=3 uid="uid://b3i6u0u3rg3hj"]
 
 [ext_resource type="Script" path="res://Scripts/TurnManager.gd" id="1_lvaic"]
 [ext_resource type="PackedScene" uid="uid://cgjwo1gios8uk" path="res://Scenes/Character.tscn" id="1_vnued"]
+[ext_resource type="Texture2D" uid="uid://c7gyraygxiv4k" path="res://Sprites/Dragon.png" id="3_t2oa7"]
+[ext_resource type="Texture2D" uid="uid://bb6nm0ev6licm" path="res://Sprites/Boar.png" id="4_m2cqe"]
 
 [node name="BattleScene" type="Node2D"]
 script = ExtResource("1_lvaic")
 
-[node name="Character" parent="." instance=ExtResource("1_vnued")]
+[node name="Player" parent="." node_paths=PackedStringArray("opponent") instance=ExtResource("1_vnued")]
+position = Vector2(-200, 0)
+is_player = true
+visual = ExtResource("3_t2oa7")
+opponent = NodePath("../Enemy")
+
+[node name="Enemy" parent="." node_paths=PackedStringArray("opponent") instance=ExtResource("1_vnued")]
+position = Vector2(200, 0)
+visual = ExtResource("4_m2cqe")
+is_flipped = true
+opponent = NodePath("../Player")
 
 [node name="Camera2D" type="Camera2D" parent="."]
 zoom = Vector2(1.5, 1.5)

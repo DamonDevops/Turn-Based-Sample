@@ -5,6 +5,9 @@ class_name Character
 @export var current_hp :int = 25
 @export var max_hp :int = 25
 
+@export var visual :Texture2D
+@export var is_flipped :bool
+
 @export var combat_actions :Array
 @export var opponent :Node
 
@@ -12,6 +15,10 @@ class_name Character
 @onready var health_text :Label = get_node("HealthBar/HealthBarText")
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	$Sprite2D.texture = visual
+	$Sprite2D.flip_h = is_flipped
+	
+	get_node("/root/BattleScene").character_begin_turn.connect(_on_character_begin_turn)
 	health_bar.max_value = max_hp
 
 func _update_health_bar():
@@ -23,6 +30,7 @@ func _take_damage(damage):
 	_update_health_bar()
 	
 	if current_hp <= 0:
+		get_node("/root/BattleScene").character_died(self)
 		queue_free()
 	
 func _heal_damage(heal):
@@ -32,3 +40,6 @@ func _heal_damage(heal):
 		current_hp = max_hp
 	
 	_update_health_bar()
+
+func _on_character_begin_turn(character):
+	pass
