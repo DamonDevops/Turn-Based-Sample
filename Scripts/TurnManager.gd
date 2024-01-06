@@ -11,10 +11,10 @@ signal character_begin_turn(character)
 signal character_end_turn(character)
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	pass # Replace with function body.
+	await get_tree().create_timer(0.5).timeout
+	begin_next_turn()
 
 func begin_next_turn():
-	await get_tree().create_timer(0.5).timeout
 	if current_char == player_char:
 		current_char = enemy_char
 	elif current_char == enemy_char:

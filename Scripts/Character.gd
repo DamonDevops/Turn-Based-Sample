@@ -42,4 +42,28 @@ func _heal_damage(heal):
 	_update_health_bar()
 
 func _on_character_begin_turn(character):
-	pass
+	if character == self and is_player == false:
+		_decide_combat_action()
+
+func cast_combat_action(action):
+	if action.damage > 0:
+		opponent._take_damage(action.damage)
+	if action.heal > 0:
+		_heal_damage(action.heal)
+		
+	get_node("/root/BattleScene").end_current_turn()
+
+func _decide_combat_action():
+	var health_percent = float(current_hp) / float(max_hp)
+	
+	for i in combat_actions:
+		var action = i as CombatAction
+		if action.heal > 0:
+			if randf() > health_percent + 0.2:
+				cast_combat_action(action)
+				return
+			else:
+				continue
+		else:
+			cast_combat_action(action)
+			return
